@@ -76,8 +76,8 @@ Func clickPP()
 	; Sleep(100)
 	; MouseClick($MOUSE_CLICK_PRIMARY)
 	; Sleep(100)
-	MouseClick($MOUSE_CLICK_PRIMARY, $iX, $iY, 2)
-	;MouseClick($MOUSE_CLICK_PRIMARY, $iX, $iY)
+	MouseClick($MOUSE_CLICK_PRIMARY, $iX, $iY)
+	MouseClick($MOUSE_CLICK_PRIMARY, $iX, $iY) ; ?? twice ??
 	; Sleep(100)
 	; MouseDown($MOUSE_CLICK_PRIMARY) ; Set the left mouse button state as down.
 	; Sleep(100)
