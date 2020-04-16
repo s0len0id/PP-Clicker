@@ -10,24 +10,21 @@ Opt("MouseClickDownDelay", 100)
 ; relativity?? AutoItSetOption ( "MouseCoordMode" , 1 )
 
 Const $Title = 'Territory Idle' ; Th3 Naem Of Th3 Gaem.
-Const $APPNAME = 'PP Clicker 1.6.23'
+Const $APPNAME = 'PP Clicker 1.7.11'
 Const $dummy = ''
 Const $SECS5 = 12000 ; timeout
 
 Global $idTimerPP = -1
 
 Global $hMainGUI
-Global $mousePosition
 
-Global $buttonPP = [118, 439]
-Global $buttonHeal = [686, 587]
-Global $buttonRepeat = [749, 613]
-Global $buttonRepeat = [749, 613]
-Global $defaultposition = [170, 439]
+Global $mousePositionIndex
+Global $mousePositionList[3][2]
 
 _Main()
 
 Func _Main()
+	setHotKey(True, "storeMousePosition")
 	InitWindow()
 	While True ; busywait for interaction
 	 	Sleep(400) ; Sleep to reduce CPU usage
@@ -36,40 +33,46 @@ Func _Main()
 EndFunc
 
 Func InitWindow()
-$hMainGUI = GUICreate($APPNAME, 400, 150, 800, 800) ; popup
-	GUICtrlCreateLabel("leftmouseclicks PP button, heals and repeats every 12 seconds.", 30, 10)
-	GUICtrlCreateLabel("Window must be exact in top-left corner @ default window size!", 30, 30)
-	GUICtrlCreateLabel("Exits if mouse has moved to top of screen.", 30, 50)
+	$hMainGUI = GUICreate($APPNAME, 450, 150, 400, 100) ; popup
+	GUICtrlCreateLabel("move mouse to desired location and press CTRL-ALT-q, 3 times.", 30, 10)
+	GUICtrlCreateLabel("Automatically leftmouseclicks locations every 12 seconds.", 30, 30)
+	GUICtrlCreateLabel("Exits at fourth CTRL-ALT-q.", 30, 50)
 
 	GUISetOnEvent($GUI_EVENT_CLOSE, "clickedCloseButton") ; system X
-
-	Local $btSTART = GUICtrlCreateButton("START", 70, 100, 140)
-	GUICtrlSetOnEvent($btSTART, "clickedStartButton")
 
 	GUISetState(@SW_SHOW, $hMainGUI)
 EndFunc
 
-Func clickedStartButton()
-	GUICtrlSetState(@GUI_CtrlId, $GUI_HIDE)
+Func hereWeGo()
 	expiredPP($dummy, $dummy, $dummy, $dummy)
 	$idTimerPP = _Timer_SetTimer($hMainGUI, $SECS5, "expiredPP", $idTimerPP) ; why Id?
 EndFunc
 
-Func clickButton(Const $butt)
-	WinActivate($Title)
-	MouseClick($MOUSE_CLICK_PRIMARY, $butt[0], $butt[1])
+Func expiredPP($notUsed1, $notUsed2, $notUsed3, $notUsed4) ; dummies)
+		;WinActivate($Title)
+		For $i = 0 to 2 Step 1
+			MouseClick($MOUSE_CLICK_PRIMARY, $mousePositionList[$i][0], $mousePositionList[$i][1])
+		Next
 EndFunc
 
-Func expiredPP($notUsed1, $notUsed2, $notUsed3, $notUsed4) ; dummies)
-	Local $isRepeating = False
-	If (isMouseAtQuitPosition()) Then
-		quit()
+Func storeMousePosition()
+	Local $nowPos = MouseGetPos()
+	$mousePositionList[$mousePositionIndex][0]=$nowPos[0]
+	$mousePositionList[$mousePositionIndex][1]=$nowPos[1]
+	$mousePositionIndex += 1
+	if ($mousePositionIndex==3) Then
+			setHotKey(True, "quit")
+			; why can't i call hereWeGo ?!
+			hereWeGo()
+	EndIf
+EndFunc
+
+Func setHotKey(Const $wantOn, Const $func)
+	if ($wantOn) Then
+		HotKeySet("^+{q}", $func)
 	Else
-	clickButton($buttonPP)
-	clickButton($buttonHeal)
-	clickButton($buttonRepeat)
-	MouseMove($defaultposition[0], $defaultposition[1])
-	Endif
+		HotKeySet("^+{q}")
+	EndIf
 EndFunc
 
 ; ========================================
@@ -78,20 +81,15 @@ Func clickedCloseButton() ; system
 	quit()
 EndFunc
 
-Func isMouseAtQuitPosition()
-	Local $nowPos = MouseGetPos()
-	If 50 > $nowPos[1] Then
-		return True
-	Else
-		return False
-	EndIf
-EndFunc
-
 Func quit()
 	_Timer_KillAllTimers($hMainGUI)
 	GUIDelete($hMainGUI)
 	Exit
 EndFunc
+
+; ========================================
+; ========================================
+; ========================================
 
 ; WinWaitActive ( "Territory Idle" , "" , 6 )
 ;MsgBox($MB_SYSTEMMODAL, "Mouse x, y:", $mousePosition[0] & ", " & $mousePosition[1])
