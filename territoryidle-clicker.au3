@@ -34,9 +34,9 @@ EndFunc
 
 Func InitWindow()
 	$hMainGUI = GUICreate($APPNAME, 450, 150, 400, 100) ; popup
-	GUICtrlCreateLabel("move mouse to desired location and press CTRL-ALT-q, 3 times.", 30, 10)
+	GUICtrlCreateLabel("move mouse to desired location and press CTRL-SHIFT-q, 3 times.", 30, 10)
 	GUICtrlCreateLabel("Automatically leftmouseclicks locations every 12 seconds.", 30, 30)
-	GUICtrlCreateLabel("Exits at fourth CTRL-ALT-q.", 30, 50)
+	GUICtrlCreateLabel("Exits at fourth CTRL-SHIFT-q.", 30, 50)
 
 	GUISetOnEvent($GUI_EVENT_CLOSE, "clickedCloseButton") ; system X
 
