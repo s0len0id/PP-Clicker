@@ -10,7 +10,7 @@ Opt("MouseClickDownDelay", 100)
 ; relativity?? AutoItSetOption ( "MouseCoordMode" , 1 )
 
 Const $Title = 'Territory Idle' ; Th3 Naem Of Th3 Gaem.
-Const $APPNAME = 'PP Clicker 1.7.11'
+Const $APPNAME = 'PP Clicker 1.7.12'
 Const $dummy = ''
 Const $SECS5 = 12000 ; timeout
 
@@ -34,9 +34,9 @@ EndFunc
 
 Func InitWindow()
 	$hMainGUI = GUICreate($APPNAME, 450, 150, 400, 100) ; popup
-	GUICtrlCreateLabel("move mouse to desired location and press CTRL-SHIFT-q, 3 times.", 30, 10)
-	GUICtrlCreateLabel("Automatically leftmouseclicks locations every 12 seconds.", 30, 30)
-	GUICtrlCreateLabel("Exits at fourth CTRL-SHIFT-q.", 30, 50)
+	GUICtrlCreateLabel("Move mouse to desired location and press CTRL-SHIFT-q. Three times total.", 30, 10)
+	GUICtrlCreateLabel("Automatically leftmouseclicks the 3 locations every 12 seconds.", 30, 30)
+	GUICtrlCreateLabel("To exit press CTRL-SHIFT-q a fourth time", 30, 50)
 
 	GUISetOnEvent($GUI_EVENT_CLOSE, "clickedCloseButton") ; system X
 
