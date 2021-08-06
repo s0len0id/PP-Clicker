@@ -12,14 +12,16 @@ Opt("MouseClickDownDelay", 100)
 Const $Title = 'Territory Idle' ; Th3 Naem Of Th3 Gaem.
 Const $APPNAME = 'PP Clicker 1.7.12'
 Const $dummy = ''
-Const $SECS5 = 12000 ; timeout
+Const $SECS5 = 3000 ; timeout msecs
 
 Global $idTimerPP = -1
 
 Global $hMainGUI
 
 Global $mousePositionIndex
-Global $mousePositionList[3][2]
+Global $numberOfPositions = 4
+; how to dimension array programmatically to $numberOfPositions?
+Global $mousePositionList[4][2]
 
 _Main()
 
@@ -49,8 +51,9 @@ Func hereWeGo()
 EndFunc
 
 Func expiredPP($notUsed1, $notUsed2, $notUsed3, $notUsed4) ; dummies)
+		; TODO: should disable timer while processing this method
 		;WinActivate($Title)
-		For $i = 0 to 2 Step 1
+		For $i = 0 to $numberOfPositions-1 Step 1
 			MouseClick($MOUSE_CLICK_PRIMARY, $mousePositionList[$i][0], $mousePositionList[$i][1])
 		Next
 EndFunc
@@ -60,7 +63,7 @@ Func storeMousePosition()
 	$mousePositionList[$mousePositionIndex][0]=$nowPos[0]
 	$mousePositionList[$mousePositionIndex][1]=$nowPos[1]
 	$mousePositionIndex += 1
-	if ($mousePositionIndex==3) Then
+	if ($mousePositionIndex==$numberOfPositions) Then
 			setHotKey(True, "quit")
 			; why can't i call hereWeGo ?!
 			hereWeGo()
